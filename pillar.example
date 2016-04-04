@@ -1,8 +1,10 @@
 unbound:
-  include:
-    - example_formula.core
-  require:
-    - sls: example_formula.core
+  # If this formula has dependencies or needs to include
+  # other SaltStack formulas, define them here.
+  # include:
+  #   - example_formula.core
+  # require:
+  #   - sls: example_formula.core
 
 {%- if grains['os_family'] == 'Debian' -%}
   default:
@@ -33,7 +35,7 @@ unbound:
     do_ip6: 'yes'
     do_tcp: 'yes'
     do_udp: 'yes'
-    do_not_query_localhost: 'yes' # If 'no', the above 'do_not_query_addresses' set by default
+    do_not_query_localhost: 'yes' # If 'no', the addresses in 'do_not_query_addresses' are set by default
     hide_identity: 'no'
     hide_version: 'no'
     identity: '' # Leave blank to return hostname
