@@ -18,69 +18,14 @@ server:
 ######################################################################
 {%- if 'access_controls' in salt['pillar.get']('unbound:server:core') %}
   {%- for control_type, controls in salt['pillar.get']('unbound:server:core:access_controls', {})|dictsort %}
-debug: {{ control_type }}
-    {%- if 'allow' in controls %}
-	# Allow these host(s)
-      {%- if controls.allow is string %}
-    access-control: {{ controls.allow }} allow
-      {%- else %}
-        {%- for control in controls.allow %}
-    access-control: {{ control }} allow
-	    {%- endfor %}
-      {%- endif %}
+    {%- if controls is string %}
+    access-control: {{ controls }} {{ control_type }}
+    {%- else %}
+      {%- for control in controls %}
+    access-control: {{ controls }} {{ control_type }}      
+      {%- endfor %}
     {%- endif %}
-    {%- if 'refuse' in controls %}
-	# Refuse these host(s)
-      {%- if controls.refuse is string %}
-    access-control: {{ controls.refuse }} refuse
-      {%- else %}
-        {%- for control in controls.refuse %}
-    access-control: {{ control }} refuse
-	    {%- endfor %}
-      {%- endif %}
-    {%- endif %}
-    {%- if 'deny' in controls %}
-	# Deny these host(s)
-      {%- if controls.deny is string %}
-    access-control: {{ controls.deny }} deny
-      {%- else %}
-        {%- for control in controls.deny %}
-    access-control: {{ control }} deny
-	    {%- endfor %}
-      {%- endif %}
-    {%- endif %}
-    {%- if 'allow_snoop' in controls %}
-	# Allow snoop from these host(s)
-      {%- if controls.allow_snoop is string %}
-    access-control: {{ controls.allow_snoop }} allow_snoop
-      {%- else %}
-        {%- for control in controls.allow_snoop %}
-    access-control: {{ control }} allow_snoop
-	    {%- endfor %}
-      {%- endif %}
-    {%- endif %}
-    {%- if 'deny_non_local' in controls %}
-	# Deny non local from these host(s)
-      {%- if controls.deny_non_local is string %}
-    access-control: {{ controls.deny_non_local }} deny_non_local
-      {%- else %}
-        {%- for control in controls.deny_non_local %}
-    access-control: {{ control }} deny_non_local
-	    {%- endfor %}
-      {%- endif %}
-    {%- endif %}
-    {%- if 'refuse_non_local' in controls %}
-	# Refuse non local from these host(s)
-      {%- if controls.refuse_non_local is string %}
-    access-control: {{ controls.refuse_non_local }} refuse_non_local
-      {%- else %}
-        {%- for control in controls.refuse_non_local %}
-    access-control: {{ control }} refuse_non_local
-	    {%- endfor %}
-      {%- endif %}
-    {%- endif %}
-  {% endfor %}
-{%- endif %}
+  {%- endfor %}
 {%- if 'cache_max_ttl' in salt['pillar.get']('unbound:server:core', {}) %}
     cache-max-ttl: {{ salt['pillar.get']('unbound:server:core:cache_max_ttl') }}
 {%- endif %}
