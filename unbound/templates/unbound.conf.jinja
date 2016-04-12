@@ -12,112 +12,636 @@
   {%- endif %}
 {%- endmacro %}
 
-##################################
-# Server settings
-##################################
 server:
-{%- if 'access_controls' in salt['pillar.get']('unbound:server') %}
-  {%- for control_type, controls in salt['pillar.get]('unbound:server:access_controls', {})|dictsort %}
+######################################################################
+# Core server setttings
+######################################################################
+{%- if 'access_controls' in salt['pillar.get']('unbound:server:core') %}
+  {%- for control_type, controls in salt['pillar.get']('unbound:server:core:access_controls', {})|dictsort %}
     {%- if 'allow' in controls %}
 	# Allow these host(s)
       {%- if controls.allow is string %}
-	access-control: {{ controls.allow }} allow
+    access-control: {{ controls.allow }} allow
       {%- else %}
         {%- for control in controls.allow %}
-	access-control: {{ control }} allow
+    access-control: {{ control }} allow
 	    {%- endfor %}
       {%- endif %}
     {%- endif %}
     {%- if 'refuse' in controls %}
 	# Refuse these host(s)
       {%- if controls.refuse is string %}
-	access-control: {{ controls.refuse }} refuse
+    access-control: {{ controls.refuse }} refuse
       {%- else %}
         {%- for control in controls.refuse %}
-	access-control: {{ control }} refuse
+    access-control: {{ control }} refuse
 	    {%- endfor %}
       {%- endif %}
     {%- endif %}
     {%- if 'deny' in controls %}
 	# Deny these host(s)
       {%- if controls.deny is string %}
-	access-control: {{ controls.deny }} deny
+    access-control: {{ controls.deny }} deny
       {%- else %}
         {%- for control in controls.deny %}
-	access-control: {{ control }} deny
+    access-control: {{ control }} deny
 	    {%- endfor %}
       {%- endif %}
     {%- endif %}
     {%- if 'allow_snoop' in controls %}
 	# Allow snoop from these host(s)
       {%- if controls.allow_snoop is string %}
-	access-control: {{ controls.allow_snoop }} allow_snoop
+    access-control: {{ controls.allow_snoop }} allow_snoop
       {%- else %}
         {%- for control in controls.allow_snoop %}
-	access-control: {{ control }} allow_snoop
+    access-control: {{ control }} allow_snoop
 	    {%- endfor %}
       {%- endif %}
     {%- endif %}
     {%- if 'deny_non_local' in controls %}
 	# Deny non local from these host(s)
       {%- if controls.deny_non_local is string %}
-	access-control: {{ controls.deny_non_local }} deny_non_local
+    access-control: {{ controls.deny_non_local }} deny_non_local
       {%- else %}
         {%- for control in controls.deny_non_local %}
-	access-control: {{ control }} deny_non_local
+    access-control: {{ control }} deny_non_local
 	    {%- endfor %}
       {%- endif %}
     {%- endif %}
     {%- if 'refuse_non_local' in controls %}
 	# Refuse non local from these host(s)
       {%- if controls.refuse_non_local is string %}
-	access-control: {{ controls.refuse_non_local }} refuse_non_local
+    access-control: {{ controls.refuse_non_local }} refuse_non_local
       {%- else %}
         {%- for control in controls.refuse_non_local %}
-	access-control: {{ control }} refuse_non_local
+    access-control: {{ control }} refuse_non_local
 	    {%- endfor %}
       {%- endif %}
     {%- endif %}
   {% endfor %}
 {%- endif %}
-{%- if 'cache_max_ttl' in salt['pillar.get']('unbound:server', {}) %}
-	cache-max-ttl: {{ salt['pillar.get']('unbound:server:cache_max_ttl') }}
+{%- if 'cache_max_ttl' in salt['pillar.get']('unbound:server:core', {}) %}
+    cache-max-ttl: {{ salt['pillar.get']('unbound:server:core:cache_max_ttl') }}
 {%- endif %}
-{%- if 'cache_min_ttl' in salt['pillar.get']('unbound:server', {}) %}
-	cache-min-ttl: {{ salt['pillar.get']('unbound:server:cache_min_ttl') }}
+{%- if 'cache_min_ttl' in salt['pillar.get']('unbound:server:core', {}) %}
+    cache-min-ttl: {{ salt['pillar.get']('unbound:server:core:cache_min_ttl') }}
 {%- endif %}
-{%- if 'chroot' in salt['pillar.get']('unbound:server', {}) %}
-	chroot: "{{ salt['pillar.get']('unbound:server:chroot') }}"
+{%- if 'chroot' in salt['pillar.get']('unbound:server:core', {}) %}
+    chroot: "{{ salt['pillar.get']('unbound:server:core:chroot') }}"
 {%- endif %}
-{%- if 'directory' in salt['pillar.get']('unbound:server', {}) %}
-	directory: "{{ salt['pillar.get']('unbound:server:directory') }}"
+{%- if 'directory' in salt['pillar.get']('unbound:server:core', {}) %}
+    directory: "{{ salt['pillar.get']('unbound:server:core:directory') }}"
 {%- endif %}
-	do-daemonize: {{ salt['pillar.get']('unbound:server:do_daemonize', 'yes') }}
-	do-ip4: {{ salt['pillar.get']('unbound:server:do_ip4', 'yes') }}
-	do-ip6: {{ salt['pillar.get']('unbound:server:do_ip6', 'yes') }}
-	do-udp: {{ salt['pillar.get']('unbound:server:do_udp', 'yes') }}
-	do-tcp: {{ salt['pillar.get']('unbound:server:do_tcp', 'yes') }}
-{%- if 'do_not_query_localhost' in salt['pillar.get']('unbound:server', {}) %}
-	do-not-query-localhost: {{ salt['pillar.get']('unbound:server:do_not_query_localhost') }}
+    do-daemonize: {{ salt['pillar.get']('unbound:server:core:do_daemonize', 'yes') }}
+    do-ip4: {{ salt['pillar.get']('unbound:server:core:do_ip4', 'yes') }}
+    do-ip6: {{ salt['pillar.get']('unbound:server:core:do_ip6', 'yes') }}
+    do-udp: {{ salt['pillar.get']('unbound:server:core:do_udp', 'yes') }}
+    do-tcp: {{ salt['pillar.get']('unbound:server:core:do_tcp', 'yes') }}
+{%- if 'do_not_query_localhost' in salt['pillar.get']('unbound:server:core', {}) %}
+    do-not-query-localhost: {{ salt['pillar.get']('unbound:server:core:do_not_query_localhost') }}
 {%- endif %}
-{%- if 'hide_identity' in salt['pillar.get']('unbound:server', {}) %}
-	hide-identity: {{ salt['pillar.get']('unbound:server:hide_identity') }}
+{%- if 'hide_identity' in salt['pillar.get']('unbound:server:core', {}) %}
+    hide-identity: {{ salt['pillar.get']('unbound:server:core:hide_identity') }}
 {%- endif %}
-{%- if 'hide_version' in salt['pillar.get']('unbound:server', {}) %}
-	hide-version: {{ salt['pillar.get']('unbound:server:hide_version') }}
+{%- if 'hide_version' in salt['pillar.get']('unbound:server:core', {}) %}
+    hide-version: {{ salt['pillar.get']('unbound:server:core:hide_version') }}
 {%- endif %}
-{%- if 'identity' in salt['pillar.get']('unbound:server', {}) %}
-	identity: "{{ salt['pillar.get']('unbound:server:identity') }}"
+{%- if 'identity' in salt['pillar.get']('unbound:server:core', {}) %}
+    identity: "{{ salt['pillar.get']('unbound:server:core:identity') }}"
 {%- endif %}
-{%- if 'interfaces' in salt['pillar.get']('unbound:server', {}) %}
-	# Listen on these interfaces
-  {%- for interface in salt['pillar.get']('unbound:server:interfaces', {}) %}
-    {%- if interface is string %}
-	interface: {{ interface }}
+{%- if 'interfaces' in salt['pillar.get']('unbound:server:core', {}) %}
+    # Listen on these interfaces
+  {%- for interfaces in salt['pillar.get']('unbound:server:core:interfaces', {}) %}
+    {%- if interfaces is string %}
+    interface: {{ interfaces }}
     {%- else %}
-      {%- for interface in in salt['pillar.get]('unbound:server:interfaces', {}) %}
-	interface: {{ interface }}
+      {%- for interface in salt['pillar.get']('unbound:server:core:interfaces', {}) %}
+    interface: {{ interface }}
       {%- endfor %}
     {%- endif %}
   {%- endfor %}
+{%- endif %}
+{%- if 'local_data' in salt['pillar.get']('unbound:server:core', {}) %}
+    # Local-data entries
+  {%- for local_data_entries in salt['pillar.get']('unbound:server:core:local_data', {}) %}
+    {%- if local_data_entries is string %}
+    local-data: {{ local_data_entries }}
+    {%- else %}
+      {%- for local_data_entry in salt['pillar.get']('unbound:server:core:local_data', {}) %}
+    local-data: {{ local_data_entry }}
+      {%- endfor %}
+    {%- endif %}
+  {%- endfor %}
+{%- endif %}
+{%- if 'local_data_ptr' in salt['pillar.get']('unbound:server:core', {}) %}
+    # Local-data entries
+  {%- for local_data_ptr_entries in salt['pillar.get']('unbound:server:core:local_data_ptr', {}) %}
+    {%- if local_data_ptr_entries is string %}
+    local-data-ptr: {{ local_data_ptr_entries }}
+    {%- else %}
+      {%- for local_data_ptr_entry in salt['pillar.get']('unbound:server:core:local_data_ptr', {}) %}
+    local-data-ptr: {{ local_data_ptr_entry }}
+      {%- endfor %}
+    {%- endif %}
+  {%- endfor %}
+{%- endif %}
+{%- if 'local_zones' in salt['pillar.get']('unbound:server:core') %}
+  {%- for zone_type, zones in salt['pillar.get']('unbound:server:core:local_zones', {})|dictsort %}
+    {%- if 'nodefault' in zones %}
+    # Nodefault zones
+      {%- if zones.nodefault is string %}
+    local-zone: {{ zones.nodefault }} nodefault
+      {%- else %}
+        {%- for zone in zones.nodefault %}
+    local-zone: {{ zone }} nodefault
+	    {%- endfor %}
+      {%- endif %}
+    {%- endif %}
+    {%- if 'transparent' in zones %}
+    # Transparent zones
+      {%- if zones.transparent is string %}
+    local-zone: {{ zones.transparent }} transparent
+      {%- else %}
+        {%- for zone in zones.transparent %}
+    local-zone: {{ zone }} transparent
+	    {%- endfor %}
+      {%- endif %}
+    {%- endif %}
+    {%- if 'deny' in zones %}
+    # Denied zones
+      {%- if zones.deny is string %}
+    local-zone: {{ zones.deny }} deny
+      {%- else %}
+        {%- for zone in zones.deny %}
+    local-zone: {{ zone }} deny
+	    {%- endfor %}
+      {%- endif %}
+    {%- endif %}
+    {%- if 'refuse' in zones %}
+    # Refused zones
+      {%- if zones.refuse is string %}
+    local-zone: {{ zones.refuse }} refuse
+      {%- else %}
+        {%- for zone in zones.refuse %}
+    local-zone: {{ zone }} refuse
+	    {%- endfor %}
+      {%- endif %}
+    {%- endif %}
+    {%- if 'static' in zones %}
+    # Static zones
+      {%- if zones.static is string %}
+    local-zone: {{ zones.static }} static
+      {%- else %}
+        {%- for zone in zones.static %}
+    local-zone: {{ zone }} static
+	    {%- endfor %}
+      {%- endif %}
+    {%- endif %}
+    {%- if 'redirect' in zones %}
+    # Redirect zones
+      {%- if zones.redirect is string %}
+    local-zone: {{ zones.redirect }} redirect
+      {%- else %}
+        {%- for zone in zones.redirect %}
+    local-zone: {{ zone }} redirect
+	    {%- endfor %}
+      {%- endif %}
+    {%- endif %}
+    {%- if 'typetransparent' in zones %}
+    # Typetransparent zones
+      {%- if zones.typetransparent is string %}
+    local-zone: {{ zones.typetransparent }} typetransparent
+      {%- else %}
+        {%- for zone in zones.typetransparent %}
+    local-zone: {{ zone }} typetransparent
+	    {%- endfor %}
+      {%- endif %}
+    {%- endif %}
+  {% endfor %}
+{%- endif %}
+{%- if 'log_queries' in salt['pillar.get']('unbound:server:core', {}) %}
+    log-queries: {{ salt['pillar.get']('unbound:server:core:log_queries') }}
+{%- endif %}
+{%- if 'log_time_ascii' in salt['pillar.get']('unbound:server:core', {}) %}
+    log-time-ascii: {{ salt['pillar.get']('unbound:server:core:log_time_ascii') }}
+{%- endif %}
+{%- if 'logfile' in salt['pillar.get']('unbound:server:core', {}) %}
+    logfile: "{{ salt['pillar.get']('unbound:server:core:logfile') }}"
+{%- endif %}
+    module-config: "{{ salt['pillar.get']('unbound:server:core:module_config', 'validator iterator') }}"
+{%- if 'pidfile' in salt['pillar.get']('unbound:server:core', {}) %}
+    pidfile: "{{ salt['pillar.get']('unbound:server:core:pidfile') }}"
+{%- endif %}
+    port: {{ salt['pillar.get']('unbound:server:core:port', '53') }}
+{%- if 'prefetch' in salt['pillar.get']('unbound:server:core', {}) %}
+    prefetch: "{{ salt['pillar.get']('unbound:server:core:prefetch') }}"
+{%- endif %}
+{%- if 'root_hints' in salt['pillar.get']('unbound:server:core', {}) %}
+    root-hints: "{{ salt['pillar.get']('unbound:server:core:root_hints') }}"
+{%- endif %}
+{%- if 'use_syslog' in salt['pillar.get']('unbound:server:core', {}) %}
+    use-syslog: {{ salt['pillar.get']('unbound:server:core:use_syslog') }}
+{%- endif %}
+{%- if 'use_syslog' in salt['pillar.get']('unbound:server:core', {}) %}
+    use-syslog: "{{ salt['pillar.get']('unbound:server:core:use_syslog') }}"
+{%- endif %}
+    module-config: {{ salt['pillar.get']('unbound:server:core:verbosity', '1') }}
+{%- if 'version' in salt['pillar.get']('unbound:server:core', {}) %}
+    version: "{{ salt['pillar.get']('unbound:server:core:version') }}"
+{%- endif %}
+{%- if 'advanced' in salt['pillar.get']('unbound:server', {}) %}
+######################################################################
+# Advanced server setttings
+######################################################################
+  {%- if 'add_holddown' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    add-holddown: {{ salt['pillar.get']('unbound:server:advanced:add_holddown') }}
+  {%- endif %}
+  {%- if 'auto_trust_anchor_file' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    auto-trust-anchor-file: "{{ salt['pillar.get']('unbound:server:advanced:auto_trust_anchor_file') }}"
+  {%- endif %}
+  {%- if 'del_holddown' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    del-holddown: {{ salt['pillar.get']('unbound:server:advanced:del_holddown') }}
+  {%- endif %}
+  {%- if 'delay_close' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    delay-close: {{ salt['pillar.get']('unbound:server:advanced:delay_close') }}
+  {%- endif %}
+  {%- if 'dlv_anchor_file' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    dlv-anchor-file: "{{ salt['pillar.get']('unbound:server:advanced:dlv_anchor_file') }}"
+  {%- endif %}
+  {%- if 'do_not_query_addresses' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    # Do not query these addresses
+    {%- for do_not_query_addresses in salt['pillar.get']('unbound:server:advanced:do_not_query_addresses', {}) %}
+      {%- if do_not_query_addresses is string %}
+    do-not-query-address: {{ do_not_query_addresses }}
+      {%- else %}
+        {%- for do_not_query_address in salt['pillar.get']('unbound:server:advanced:do_not_query_addresses', {}) %}
+    do-not-query-address: {{ do_not_query_address }}
+        {%- endfor %}
+      {%- endif %}
+    {%- endfor %}
+  {%- endif %}
+  {%- if 'domains_insecure' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    # Turn of DNSSEC for these domains
+    {%- for domains_insecure in salt['pillar.get']('unbound:server:advanced:domains_insecure', {}) %}
+      {%- if domains_insecure is string %}
+    domain-insecure: {{ domains_insecure }}
+      {%- else %}
+        {%- for domain_insecure in salt['pillar.get']('unbound:server:advanced:domains_insecure', {}) %}
+    domain-insecure: {{ domain_insecure }}
+        {%- endfor %}
+      {%- endif %}
+    {%- endfor %}
+  {%- endif %}
+  {%- if 'edns_buffer_size' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    edns-buffer-size: {{ salt['pillar.get']('unbound:server:advanced:edns_buffer_size') }}
+  {%- endif %}
+  {%- if 'extended_statistics' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    extended-statistics: {{ salt['pillar.get']('unbound:server:advanced:extended_statistics') }}
+  {%- endif %}
+  {%- if 'harden_below_nxdomain' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    harden-below-nxdomain: {{ salt['pillar.get']('unbound:server:advanced:harden_below_nxdomain') }}
+  {%- endif %}
+  {%- if 'harden_below_nxdomain' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    harden-below-nxdomain: {{ salt['pillar.get']('unbound:server:advanced:harden_below_nxdomain') }}
+  {%- endif %}
+  {%- if 'harden_dnssec_stripped' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    harden-dnssec-stripped: {{ salt['pillar.get']('unbound:server:advanced:harden_dnssec_stripped') }}
+  {%- endif %}
+  {%- if 'harden_glue' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    harden-glue: {{ salt['pillar.get']('unbound:server:advanced:harden_glue') }}
+  {%- endif %}
+  {%- if 'harden_large_queries' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    harden-large-queries: {{ salt['pillar.get']('unbound:server:advanced:harden_large_queries') }}
+  {%- endif %}
+  {%- if 'harden_referral_path' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    harden-referral-path: {{ salt['pillar.get']('unbound:server:advanced:harden_referral_path') }}
+  {%- endif %}
+  {%- if 'harden_short_bufsize' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    harden-short-bufsize: {{ salt['pillar.get']('unbound:server:advanced:harden_short_bufsize') }}
+  {%- endif %}
+  {%- if 'ignore_cd_flag' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    ignore-cd-flag: {{ salt['pillar.get']('unbound:server:advanced:ignore_cd_flag') }}
+  {%- endif %}
+  {%- if 'incoming_num_tcp' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    incoming-num-tcp: {{ salt['pillar.get']('unbound:server:advanced:incoming_num_tcp') }}
+  {%- endif %}
+  {%- if 'infra_cache_numhosts' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    infra-cache-numhosts: {{ salt['pillar.get']('unbound:server:advanced:infra_cache_numhosts') }}
+  {%- endif %}
+  {%- if 'infra_cache_slabs' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    infra-cache-slabs: {{ salt['pillar.get']('unbound:server:advanced:infra_cache_slabs') }}
+  {%- endif %}
+  {%- if 'infra_host_ttl' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    infra-host-ttl: {{ salt['pillar.get']('unbound:server:advanced:infra_host_ttl') }}
+  {%- endif %}
+  {%- if 'interface_automatic' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    interface-automatic: {{ salt['pillar.get']('unbound:server:advanced:interface_automatic') }}
+  {%- endif %}
+  {%- if 'jostle_timeout' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    jostle-timeout: {{ salt['pillar.get']('unbound:server:advanced:jostle_timeout') }}
+  {%- endif %}
+  {%- if 'keep_missing' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    keep-missing: {{ salt['pillar.get']('unbound:server:advanced:keep_missing') }}
+  {%- endif %}
+  {%- if 'key_cache_size' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    key-cache-size: {{ salt['pillar.get']('unbound:server:advanced:key_cache_size') }}
+  {%- endif %}
+  {%- if 'key_cache_slabs' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    key-cache-slabs: {{ salt['pillar.get']('unbound:server:advanced:key_cache_slabs') }}
+  {%- endif %}
+  {%- if 'max_udp_size' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    max-udp-size: {{ salt['pillar.get']('unbound:server:advanced:max_udp_size') }}
+  {%- endif %}
+  {%- if 'minimal_responses' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    minimal-responses: {{ salt['pillar.get']('unbound:server:advanced:minimal_responses') }}
+  {%- endif %}
+  {%- if 'msg_buffer_size' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    msg-buffer-size: {{ salt['pillar.get']('unbound:server:advanced:msg_buffer_size') }}
+  {%- endif %}
+  {%- if 'msg_cache_size' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    msg-cache-size: {{ salt['pillar.get']('unbound:server:advanced:msg_cache_size') }}
+  {%- endif %}
+  {%- if 'msg_cache_slabs' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    msg-cache-slabs: {{ salt['pillar.get']('unbound:server:advanced:msg_cache_slabs') }}
+  {%- endif %}
+  {%- if 'neg_cache_size' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    neg-cache-size: {{ salt['pillar.get']('unbound:server:advanced:neg_cache_size') }}
+  {%- endif %}
+  {%- if 'num_queries_per_thread' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    num-queries-per-thread: {{ salt['pillar.get']('unbound:server:advanced:num_queries_per_thread') }}
+  {%- endif %}
+  {%- if 'num_threads' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    num-threads: {{ salt['pillar.get']('unbound:server:advanced:num_threads') }}
+  {%- endif %}
+  {%- if 'num_threads' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    num-threads: {{ salt['pillar.get']('unbound:server:advanced:num_threads') }}
+  {%- endif %}
+  {%- if 'outgoing_interfaces' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    {%- for outgoing_interfaces in salt['pillar.get']('unbound:server:advanced:outgoing_interfaces', {}) %}
+      {%- if outgoing_interfaces is string %}
+    # Outgoing interface
+    outgoing-interface: {{ outgoing_interfaces }}
+      {%- else %}
+    # Outgoing interfaces
+        {%- for outgoing_interface in salt['pillar.get']('unbound:server:advanced:outgoing_interfaces', {}) %}
+    outgoing-interface: {{ outgoing_interface }}
+        {%- endfor %}
+      {%- endif %}
+    {%- endfor %}
+  {%- endif %}
+  {%- if 'outgoing_num_tcp' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    outgoing-num-tcp: {{ salt['pillar.get']('unbound:server:advanced:outgoing_num_tcp') }}
+  {%- endif %}
+  {%- if 'outgoing_port_avoid' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    outgoing-port-avoid: "{{ salt['pillar.get']('unbound:server:advanced:outgoing_port_avoid') }}"
+  {%- endif %}
+  {%- if 'outgoing_port_permit' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    outgoing-port-permit: {{ salt['pillar.get']('unbound:server:advanced:outgoing_port_permit') }}
+  {%- endif %}
+  {%- if 'outgoing_range' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    outgoing-range: {{ salt['pillar.get']('unbound:server:advanced:outgoing_range') }}
+  {%- endif %}
+  {%- if 'prefetch_key' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    prefetch-key: {{ salt['pillar.get']('unbound:server:advanced:prefetch_key') }}
+  {%- endif %}
+  {%- if 'private_addresses' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    {%- for private_addresses in salt['pillar.get']('unbound:server:advanced:private_addresses', {}) %}
+      {%- if private_addresses is string %}
+    # Private address
+    private-address: {{ private_addresses }}
+      {%- else %}
+    # Private addresses
+        {%- for private_address in salt['pillar.get']('unbound:server:advanced:private_addresses', {}) %}
+    private-address: {{ private_address }}
+        {%- endfor %}
+      {%- endif %}
+    {%- endfor %}
+  {%- endif %}
+  {%- if 'private_domains' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    {%- for private_domains in salt['pillar.get']('unbound:server:advanced:private_domains', {}) %}
+      {%- if private_domains is string %}
+    # Private domain
+    private-domain: {{ private_domains }}
+      {%- else %}
+    # Private domains
+        {%- for private_domain in salt['pillar.get']('unbound:server:advanced:private_domains', {}) %}
+    private-domain: {{ private_domain }}
+        {%- endfor %}
+      {%- endif %}
+    {%- endfor %}
+  {%- endif %}
+  {%- if 'rrset_cache_size' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    rrset-cache-size: {{ salt['pillar.get']('unbound:server:advanced:rrset_cache_size') }}
+  {%- endif %}
+  {%- if 'rrset_cache_slabs' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    rrset-cache-slabs: {{ salt['pillar.get']('unbound:server:advanced:rrset_cache_slabs') }}
+  {%- endif %}
+  {%- if 'rrset_roundrobin' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    rrset-roundrobin: {{ salt['pillar.get']('unbound:server:advanced:rrset_roundrobin') }}
+  {%- endif %}
+  {%- if 'so_rcvbuf' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    so-rcvbuf: {{ salt['pillar.get']('unbound:server:advanced:so_rcvbuf') }}
+  {%- endif %}
+  {%- if 'so_reuseport' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    so-reuseport: {{ salt['pillar.get']('unbound:server:advanced:so_reuseport') }}
+  {%- endif %}
+  {%- if 'so_sndbuf' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    so-sndbuf: {{ salt['pillar.get']('unbound:server:advanced:so_sndbuf') }}
+  {%- endif %}
+  {%- if 'ssl_port' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    ssl-port: {{ salt['pillar.get']('unbound:server:advanced:ssl_port') }}
+  {%- endif %}
+  {%- if 'ssl_service_key' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    ssl-service-key: "{{ salt['pillar.get']('unbound:server:advanced:ssl_service_key') }}"
+  {%- endif %}
+  {%- if 'ssl_service_pem' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    ssl-service-pem: "{{ salt['pillar.get']('unbound:server:advanced:ssl_service_pem') }}"
+  {%- endif %}
+  {%- if 'ssl_upstream' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    ssl-upstream: {{ salt['pillar.get']('unbound:server:advanced:ssl_upstream') }}
+  {%- endif %}
+  {%- if 'statistics_cumulative' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    statistics-cumulative: {{ salt['pillar.get']('unbound:server:advanced:statistics_cumulative') }}
+  {%- endif %}
+  {%- if 'statistics_interval' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    statistics-interval: {{ salt['pillar.get']('unbound:server:advanced:statistics_interval') }}
+  {%- endif %}
+  {%- if 'target_fetch_policy' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    target-fetch-policy: "{{ salt['pillar.get']('unbound:server:advanced:target_fetch_policy') }}"
+  {%- endif %}
+  {%- if 'tcp_upstream' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    tcp-upstream: {{ salt['pillar.get']('unbound:server:advanced:tcp_upstream') }}
+  {%- endif %}
+  {%- if 'trust_anchor_files' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    {%- for trust_anchor_files in salt['pillar.get']('unbound:server:advanced:trust_anchor_files', {}) %}
+      {%- if trust_anchor_files is string %}
+    # Private domain
+    trust-anchor-file: {{ trust_anchor_files }}
+      {%- else %}
+    # Private domains
+        {%- for trust_anchor_file in salt['pillar.get']('unbound:server:advanced:trust_anchor_files', {}) %}
+    trust-anchor-file: {{ trust_anchor_file }}
+        {%- endfor %}
+      {%- endif %}
+    {%- endfor %}
+  {%- endif %}
+  {%- if 'trust_anchors' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    {%- for trust_anchors in salt['pillar.get']('unbound:server:advanced:trust_anchors', {}) %}
+      {%- if trust_anchors is string %}
+    # Private domain
+    trust-anchor: {{ trust_anchors }}
+      {%- else %}
+    # Private domains
+        {%- for trust_anchor in salt['pillar.get']('unbound:server:advanced:trust_anchors', {}) %}
+    trust-anchor: {{ trust_anchor }}
+        {%- endfor %}
+      {%- endif %}
+    {%- endfor %}
+  {%- endif %}
+  {%- if 'trusted_keys_files' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    {%- for trusted_keys_files in salt['pillar.get']('unbound:server:advanced:trusted_keys_files', {}) %}
+      {%- if trusted_keys_files is string %}
+    # Private domain
+    trusted-keys-file: {{ trusted_keys_files }}
+      {%- else %}
+    # Private domains
+        {%- for trusted_keys_file in salt['pillar.get']('unbound:server:advanced:trusted_keys_files', {}) %}
+    trusted-keys-file: {{ trusted_keys_file }}
+        {%- endfor %}
+      {%- endif %}
+    {%- endfor %}
+  {%- endif %}
+  {%- if 'unwanted_reply_threshold' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    unwanted-reply-threshold: {{ salt['pillar.get']('unbound:server:advanced:unwanted_reply_threshold') }}
+  {%- endif %}
+  {%- if 'use_caps_for_id' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    use-caps-for-id: {{ salt['pillar.get']('unbound:server:advanced:use_caps_for_id') }}
+  {%- endif %}
+  {%- if 'val_bogus_ttl' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    val-bogus-ttl: {{ salt['pillar.get']('unbound:server:advanced:val_bogus_ttl') }}
+  {%- endif %}
+  {%- if 'val_clean_additional' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    val-clean-additional: {{ salt['pillar.get']('unbound:server:advanced:val_clean_additional') }}
+  {%- endif %}
+  {%- if 'val_log_level' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    val-log-level: {{ salt['pillar.get']('unbound:server:advanced:val_log_level') }}
+  {%- endif %}
+  {%- if 'val_nsec3_keysize_iterations' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    val-nsec3-keysize-iterations: "{{ salt['pillar.get']('unbound:server:advanced:val_nsec3_keysize_iterations') }}"
+  {%- endif %}
+  {%- if 'val_override_date' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    val-override-date: "{{ salt['pillar.get']('unbound:server:advanced:val_override_date') }}"
+  {%- endif %}
+  {%- if 'val_permissive_mode' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    val-permissive-mode: {{ salt['pillar.get']('unbound:server:advanced:val_permissive_mode') }}
+  {%- endif %}
+  {%- if 'val_sig_skew_max' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    val-sig-skew-max: {{ salt['pillar.get']('unbound:server:advanced:val_sig_skew_max') }}
+  {%- endif %}
+  {%- if 'val_sig_skew_min' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    val-sig-skew-min: {{ salt['pillar.get']('unbound:server:advanced:val_sig_skew_min') }}
+  {%- endif %}
+{%- endif %}
+{%- if salt['pillar.get']('unbound:stub_zones') %}
+  {%- for stub_key, stub_args in salt['pillar.get']('unbound:stub_zones', {})|dictsort %}
+stub-zone:
+    name: {{ stub_args['name'] }}
+    {%- if 'stub_addrs' in stub_args %}
+      {%- if stub_args['stub_addrs'] is string %}
+    stub-addr: {{ stub_args['stub_addrs'] }}
+      {%- else %}
+        {%- for stub_addr in stub_args['stub_addrs'] %}
+    stub-addr: {{ stub_addr }}
+        {%- endfor %}
+      {%- endif %}
+    {%- endif %}
+    {%- if 'stub_hosts' in stub_args %}
+      {%- if stub_args['stub_hosts'] is string %}
+    stub-host: {{ stub_args['stub_hosts'] }}
+      {%- else %}
+        {%- for stub_host in stub_args['stub_hosts'] %}
+    stub-host: {{ stub_host }}
+        {%- endfor %}
+      {%- endif %}
+    {%- endif %}
+    {%- if 'stub_prime' in stub_args %}
+    stub-prime: {{ stub_prime }}
+    {%- endif %}
+    {%- if 'stub_first' in stub_args %}
+    stub-first: {{ stub_first }}
+    {%- endif %}
+  {%- endfor %}
+{%- endif %}
+{%- if salt['pillar.get']('unbound:forward_zones') %}
+  {%- for forward_key, forward_args in salt['pillar.get']('unbound:forward_zones', {})|dictsort %}
+forward-zone:
+    name: {{ forward_args['name'] }}
+    {%- if 'forward_addrs' in forward_args %}
+      {%- if forward_args['forward_addrs'] is string %}
+    forward-addr: {{ forward_args['forward_addrs'] }}
+      {%- else %}
+        {%- for forward_addr in forward_args['forward_addrs'] %}
+    forward-addr: {{ forward_addr }}
+        {%- endfor %}
+      {%- endif %}
+    {%- endif %}
+    {%- if 'forward_hosts' in forward_args %}
+      {%- if forward_args['forward_hosts'] is string %}
+    forward-host: {{ forward_args['forward_hosts'] }}
+      {%- else %}
+        {%- for forward_host in forward_args['forward_hosts'] %}
+    forward-host: {{ forward_host }}
+        {%- endfor %}
+      {%- endif %}
+    {%- endif %}
+    {%- if 'forward_first' in forward_args %}
+    forward-first: {{ forward_first }}
+    {%- endif %}
+  {%- endfor %}
+{%- endif %}
+{%- if salt['pillar.get']('unbound:python') %}
+python:
+  {%- for python_scripts in salt['pillar.get']('unbound:python') %}
+    {%- if python_scripts is string %}
+    python-script: "{{ python_scripts }}"
+    {%- else %}
+      {%- for python_script in salt['pillar.get']('unbound:python') %}
+    python-script: "{{ python_script }}"
+      {%- endfor %}
+    {%- endif %}
+  {%- endfor %}
+{%- endif %}
+{%- if salt['pillar.get']('unbound:remote_control') %}
+remote-control:
+  {%- if 'control_enable' in salt['pillar.get']('unbound:remote_control', {}) %}
+    control-enable: {{ salt['pillar.get']('unbound:remote_control:control_enable') }}
+  {%- endif %}
+  {%- if 'control_interfaces' in salt['pillar.get']('unbound:remote_control', {}) %}
+    {%- for control_interfaces in salt['pillar.get']('unbound:remote_control:control_interfaces', {}) %}
+      {%- if control_interfaces is string %}
+    # Control interface
+    control-interface: {{ control_interfaces }}
+      {%- else %}
+    # Control interfaces
+        {%- for control_interface in salt['pillar.get']('unbound:remote_control:control_interfaces', {}) %}
+    control-interface: {{ control_interface }}
+        {%- endfor %}
+      {%- endif %}
+    {%- endfor %}
+  {%- endif %}
+  {%- if 'control_port' in salt['pillar.get']('unbound:remote_control', {}) %}
+    control-port: {{ salt['pillar.get']('unbound:remote_control:control_port') }}
+  {%- endif %}
+  {%- if 'server_key_file' in salt['pillar.get']('unbound:remote_control', {}) %}
+    server-key-file: "{{ salt['pillar.get']('unbound:remote_control:server_key_file') }}"
+  {%- endif %}
+  {%- if 'server_cert_file' in salt['pillar.get']('unbound:remote_control', {}) %}
+    server-cert-file: "{{ salt['pillar.get']('unbound:remote_control:server_cert_file') }}"
+  {%- endif %}
+  {%- if 'control_key_file' in salt['pillar.get']('unbound:remote_control', {}) %}
+    control-key-file: "{{ salt['pillar.get']('unbound:remote_control:control_key_file') }}"
+  {%- endif %}
+  {%- if 'control_cert_file' in salt['pillar.get']('unbound:remote_control', {}) %}
+    control-cert-file: "{{ salt['pillar.get']('unbound:remote_control:control_cert_file') }}"
+  {%- endif %}
 {%- endif %}
