@@ -2,9 +2,9 @@ unbound:
   # If this formula has dependencies or needs to include
   # other SaltStack formulas, define them here.
   # include:
-  #   - example_formula.core
+  #   - example_formula.somesls
   # require:
-  #   - sls: example_formula.core
+  #   - sls: example_formula.somesls
 
 {%- if grains['os_family'] == 'Debian' -%}
   default:
@@ -36,9 +36,9 @@ unbound:
     do_tcp: 'yes'
     do_udp: 'yes'
     do_not_query_localhost: 'yes' # If 'no', the addresses in 'do_not_query_addresses' are set by default
-    hide_identity: 'no'
-    hide_version: 'no'
-    identity: '' # Leave blank to return hostname
+    hide_identity: 'yes'
+    hide_version: 'yes'
+    identity: 'dns-server' # Leave blank to return hostname
     interfaces:
       - '192.0.2.153'
       - '0.0.0.0' # All IPv4 interfaces

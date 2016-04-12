@@ -16,5 +16,108 @@
 # Server settings
 ##################################
 server:
-{%- if salt['pillar.get']('unbound:server:access_controls') %}
+{%- if 'access_controls' in salt['pillar.get']('unbound:server') %}
+  {%- for control_type, controls in salt['pillar.get]('unbound:server:access_controls', {})|dictsort %}
+    {%- if 'allow' in controls %}
+	# Allow these host(s)
+      {%- if controls.allow is string %}
+	access-control: {{ controls.allow }} allow
+      {%- else %}
+        {%- for control in controls.allow %}
+	access-control: {{ control }} allow
+	    {%- endfor %}
+      {%- endif %}
+    {%- endif %}
+    {%- if 'refuse' in controls %}
+	# Refuse these host(s)
+      {%- if controls.refuse is string %}
+	access-control: {{ controls.refuse }} refuse
+      {%- else %}
+        {%- for control in controls.refuse %}
+	access-control: {{ control }} refuse
+	    {%- endfor %}
+      {%- endif %}
+    {%- endif %}
+    {%- if 'deny' in controls %}
+	# Deny these host(s)
+      {%- if controls.deny is string %}
+	access-control: {{ controls.deny }} deny
+      {%- else %}
+        {%- for control in controls.deny %}
+	access-control: {{ control }} deny
+	    {%- endfor %}
+      {%- endif %}
+    {%- endif %}
+    {%- if 'allow_snoop' in controls %}
+	# Allow snoop from these host(s)
+      {%- if controls.allow_snoop is string %}
+	access-control: {{ controls.allow_snoop }} allow_snoop
+      {%- else %}
+        {%- for control in controls.allow_snoop %}
+	access-control: {{ control }} allow_snoop
+	    {%- endfor %}
+      {%- endif %}
+    {%- endif %}
+    {%- if 'deny_non_local' in controls %}
+	# Deny non local from these host(s)
+      {%- if controls.deny_non_local is string %}
+	access-control: {{ controls.deny_non_local }} deny_non_local
+      {%- else %}
+        {%- for control in controls.deny_non_local %}
+	access-control: {{ control }} deny_non_local
+	    {%- endfor %}
+      {%- endif %}
+    {%- endif %}
+    {%- if 'refuse_non_local' in controls %}
+	# Refuse non local from these host(s)
+      {%- if controls.refuse_non_local is string %}
+	access-control: {{ controls.refuse_non_local }} refuse_non_local
+      {%- else %}
+        {%- for control in controls.refuse_non_local %}
+	access-control: {{ control }} refuse_non_local
+	    {%- endfor %}
+      {%- endif %}
+    {%- endif %}
+  {% endfor %}
+{%- endif %}
+{%- if 'cache_max_ttl' in salt['pillar.get']('unbound:server', {}) %}
+	cache-max-ttl: {{ salt['pillar.get']('unbound:server:cache_max_ttl') }}
+{%- endif %}
+{%- if 'cache_min_ttl' in salt['pillar.get']('unbound:server', {}) %}
+	cache-min-ttl: {{ salt['pillar.get']('unbound:server:cache_min_ttl') }}
+{%- endif %}
+{%- if 'chroot' in salt['pillar.get']('unbound:server', {}) %}
+	chroot: "{{ salt['pillar.get']('unbound:server:chroot') }}"
+{%- endif %}
+{%- if 'directory' in salt['pillar.get']('unbound:server', {}) %}
+	directory: "{{ salt['pillar.get']('unbound:server:directory') }}"
+{%- endif %}
+	do-daemonize: {{ salt['pillar.get']('unbound:server:do_daemonize', 'yes') }}
+	do-ip4: {{ salt['pillar.get']('unbound:server:do_ip4', 'yes') }}
+	do-ip6: {{ salt['pillar.get']('unbound:server:do_ip6', 'yes') }}
+	do-udp: {{ salt['pillar.get']('unbound:server:do_udp', 'yes') }}
+	do-tcp: {{ salt['pillar.get']('unbound:server:do_tcp', 'yes') }}
+{%- if 'do_not_query_localhost' in salt['pillar.get']('unbound:server', {}) %}
+	do-not-query-localhost: {{ salt['pillar.get']('unbound:server:do_not_query_localhost') }}
+{%- endif %}
+{%- if 'hide_identity' in salt['pillar.get']('unbound:server', {}) %}
+	hide-identity: {{ salt['pillar.get']('unbound:server:hide_identity') }}
+{%- endif %}
+{%- if 'hide_version' in salt['pillar.get']('unbound:server', {}) %}
+	hide-version: {{ salt['pillar.get']('unbound:server:hide_version') }}
+{%- endif %}
+{%- if 'identity' in salt['pillar.get']('unbound:server', {}) %}
+	identity: "{{ salt['pillar.get']('unbound:server:identity') }}"
+{%- endif %}
+{%- if 'interfaces' in salt['pillar.get']('unbound:server', {}) %}
+	# Listen on these interfaces
+  {%- for interface in salt['pillar.get']('unbound:server:interfaces', {}) %}
+    {%- if interface is string %}
+	interface: {{ interface }}
+    {%- else %}
+      {%- for interface in in salt['pillar.get]('unbound:server:interfaces', {}) %}
+	interface: {{ interface }}
+      {%- endfor %}
+    {%- endif %}
+  {%- endfor %}
 {%- endif %}

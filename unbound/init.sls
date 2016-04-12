@@ -3,6 +3,7 @@
 # Unbound on a server automatically
 
 {% if salt['pillar.get']('unbound:include') %}
+include:
 {% for include in salt['pillar.get']('unbound:include') %}
   - {{ include }}
 {% endfor %}
