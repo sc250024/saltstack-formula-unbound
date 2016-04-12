@@ -18,6 +18,7 @@ server:
 ######################################################################
 {%- if 'access_controls' in salt['pillar.get']('unbound:server:core') %}
   {%- for control_type, controls in salt['pillar.get']('unbound:server:core:access_controls', {})|dictsort %}
+debug: {{ control_type }}
     {%- if 'allow' in controls %}
 	# Allow these host(s)
       {%- if controls.allow is string %}
@@ -110,11 +111,12 @@ server:
     identity: "{{ salt['pillar.get']('unbound:server:core:identity') }}"
 {%- endif %}
 {%- if 'interfaces' in salt['pillar.get']('unbound:server:core', {}) %}
-    # Listen on these interfaces
   {%- for interfaces in salt['pillar.get']('unbound:server:core:interfaces', {}) %}
     {%- if interfaces is string %}
+    # Listen on this interface
     interface: {{ interfaces }}
     {%- else %}
+    # Listen on this interfaces
       {%- for interface in salt['pillar.get']('unbound:server:core:interfaces', {}) %}
     interface: {{ interface }}
       {%- endfor %}
@@ -125,22 +127,22 @@ server:
     # Local-data entries
   {%- for local_data_entries in salt['pillar.get']('unbound:server:core:local_data', {}) %}
     {%- if local_data_entries is string %}
-    local-data: {{ local_data_entries }}
+    local-data: "{{ local_data_entries }}"
     {%- else %}
       {%- for local_data_entry in salt['pillar.get']('unbound:server:core:local_data', {}) %}
-    local-data: {{ local_data_entry }}
+    local-data: "{{ local_data_entry }}"
       {%- endfor %}
     {%- endif %}
   {%- endfor %}
 {%- endif %}
 {%- if 'local_data_ptr' in salt['pillar.get']('unbound:server:core', {}) %}
-    # Local-data entries
+    # Local-data-ptr entries
   {%- for local_data_ptr_entries in salt['pillar.get']('unbound:server:core:local_data_ptr', {}) %}
     {%- if local_data_ptr_entries is string %}
-    local-data-ptr: {{ local_data_ptr_entries }}
+    local-data-ptr: "{{ local_data_ptr_entries }}"
     {%- else %}
       {%- for local_data_ptr_entry in salt['pillar.get']('unbound:server:core:local_data_ptr', {}) %}
-    local-data-ptr: {{ local_data_ptr_entry }}
+    local-data-ptr: "{{ local_data_ptr_entry }}"
       {%- endfor %}
     {%- endif %}
   {%- endfor %}
@@ -242,10 +244,10 @@ server:
 {%- if 'use_syslog' in salt['pillar.get']('unbound:server:core', {}) %}
     use-syslog: {{ salt['pillar.get']('unbound:server:core:use_syslog') }}
 {%- endif %}
-{%- if 'use_syslog' in salt['pillar.get']('unbound:server:core', {}) %}
-    use-syslog: "{{ salt['pillar.get']('unbound:server:core:use_syslog') }}"
+{%- if 'username' in salt['pillar.get']('unbound:server:core', {}) %}
+    username: "{{ salt['pillar.get']('unbound:server:core:username') }}"
 {%- endif %}
-    module-config: {{ salt['pillar.get']('unbound:server:core:verbosity', '1') }}
+    verbosity: {{ salt['pillar.get']('unbound:server:core:verbosity', '1') }}
 {%- if 'version' in salt['pillar.get']('unbound:server:core', {}) %}
     version: "{{ salt['pillar.get']('unbound:server:core:version') }}"
 {%- endif %}
@@ -565,10 +567,10 @@ stub-zone:
       {%- endif %}
     {%- endif %}
     {%- if 'stub_prime' in stub_args %}
-    stub-prime: {{ stub_prime }}
+    stub-prime: {{ stub_args['stub_prime'] }}
     {%- endif %}
     {%- if 'stub_first' in stub_args %}
-    stub-first: {{ stub_first }}
+    stub-first: {{ stub_args['stub_first'] }}
     {%- endif %}
   {%- endfor %}
 {%- endif %}
@@ -595,7 +597,7 @@ forward-zone:
       {%- endif %}
     {%- endif %}
     {%- if 'forward_first' in forward_args %}
-    forward-first: {{ forward_first }}
+    forward-first: {{ forward_args['forward_first'] }}
     {%- endif %}
   {%- endfor %}
 {%- endif %}
