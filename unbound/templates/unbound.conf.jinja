@@ -68,31 +68,27 @@ server:
     {%- endfor %}
   {%- endif %}
 {%- endif %}
-
 {%- if 'local_data' in salt['pillar.get']('unbound:server:core', {}) %}
-    # Local-data entries
-  {%- for local_data_entries in salt['pillar.get']('unbound:server:core:local_data', {}) %}
-    {%- if local_data_entries is string %}
-    local-data: "{{ local_data_entries }}"
-    {%- else %}
-      {%- for local_data_entry in salt['pillar.get']('unbound:server:core:local_data', {}) %}
+  {%- if salt['pillar.get']('unbound:server:core:local_data', {}) is string %}
+    # Local data entry
+    local-data: "{{ salt['pillar.get']('unbound:server:core:local_data', {}) }}"
+  {%- else %}
+    # Local data entries
+    {%- for local_data_entry in salt['pillar.get']('unbound:server:core:local_data', {}) %}
     local-data: "{{ local_data_entry }}"
-      {%- endfor %}
-    {%- endif %}
-  {%- endfor %}
+    {%- endfor %}
+  {%- endif %}
 {%- endif %}
-
 {%- if 'local_data_ptr' in salt['pillar.get']('unbound:server:core', {}) %}
-    # Local-data-ptr entries
-  {%- for local_data_ptr_entries in salt['pillar.get']('unbound:server:core:local_data_ptr', {}) %}
-    {%- if local_data_ptr_entries is string %}
-    local-data-ptr: "{{ local_data_ptr_entries }}"
-    {%- else %}
-      {%- for local_data_ptr_entry in salt['pillar.get']('unbound:server:core:local_data_ptr', {}) %}
+  {%- if salt['pillar.get']('unbound:server:core:local_data_ptr', {}) is string %}
+    # Local data PTR entry
+    local-data-ptr: "{{ salt['pillar.get']('unbound:server:core:local_data_ptr', {}) }}"
+  {%- else %}
+    # Local data PTR entries
+    {%- for local_data_ptr_entry in salt['pillar.get']('unbound:server:core:local_data_ptr', {}) %}
     local-data-ptr: "{{ local_data_ptr_entry }}"
-      {%- endfor %}
-    {%- endif %}
-  {%- endfor %}
+    {%- endfor %}
+  {%- endif %}
 {%- endif %}
 {%- if 'local_zones' in salt['pillar.get']('unbound:server:core') %}
   {%- for local_zone_type, local_zones in salt['pillar.get']('unbound:server:core:local_zones', {})|dictsort %}
