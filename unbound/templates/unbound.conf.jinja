@@ -1,3 +1,4 @@
+{% set unbound = pillar.get('unbound', {}) -%}
 {%- macro render_list_of_dictionaries(name, list, indent = '    ', infix = ' ', postfix = '\t') %}
 {%- if list is not iterable or list is string %}
 {{ indent ~ name ~ postfix ~ list }}
