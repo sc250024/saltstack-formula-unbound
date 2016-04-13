@@ -17,15 +17,17 @@ server:
 # Core server setttings
 ######################################################################
 {%- if 'access_controls' in salt['pillar.get']('unbound:server:core') %}
+    # Access controls
   {%- for control_type, controls in salt['pillar.get']('unbound:server:core:access_controls', {})|dictsort %}
     {%- if controls is string %}
     access-control: {{ controls }} {{ control_type }}
     {%- else %}
       {%- for control in controls %}
-    access-control: {{ controls }} {{ control_type }}      
+    access-control: {{ control }} {{ control_type }}      
       {%- endfor %}
     {%- endif %}
   {%- endfor %}
+{%- endif %}
 {%- if 'cache_max_ttl' in salt['pillar.get']('unbound:server:core', {}) %}
     cache-max-ttl: {{ salt['pillar.get']('unbound:server:core:cache_max_ttl') }}
 {%- endif %}
@@ -56,18 +58,17 @@ server:
     identity: "{{ salt['pillar.get']('unbound:server:core:identity') }}"
 {%- endif %}
 {%- if 'interfaces' in salt['pillar.get']('unbound:server:core', {}) %}
-  {%- for interfaces in salt['pillar.get']('unbound:server:core:interfaces', {}) %}
-    {%- if interfaces is string %}
+  {%- if salt['pillar.get']('unbound:server:core:interfaces', {}) is string %}
     # Listen on this interface
-    interface: {{ interfaces }}
-    {%- else %}
-    # Listen on this interfaces
-      {%- for interface in salt['pillar.get']('unbound:server:core:interfaces', {}) %}
+    interface: {{ salt['pillar.get']('unbound:server:core:interfaces', {}) }}
+  {%- else %}
+    # Listen on these interfaces
+    {%- for interface in salt['pillar.get']('unbound:server:core:interfaces', {}) %}
     interface: {{ interface }}
-      {%- endfor %}
-    {%- endif %}
-  {%- endfor %}
+    {%- endfor %}
+  {%- endif %}
 {%- endif %}
+
 {%- if 'local_data' in salt['pillar.get']('unbound:server:core', {}) %}
     # Local-data entries
   {%- for local_data_entries in salt['pillar.get']('unbound:server:core:local_data', {}) %}
@@ -80,6 +81,7 @@ server:
     {%- endif %}
   {%- endfor %}
 {%- endif %}
+
 {%- if 'local_data_ptr' in salt['pillar.get']('unbound:server:core', {}) %}
     # Local-data-ptr entries
   {%- for local_data_ptr_entries in salt['pillar.get']('unbound:server:core:local_data_ptr', {}) %}
@@ -93,78 +95,15 @@ server:
   {%- endfor %}
 {%- endif %}
 {%- if 'local_zones' in salt['pillar.get']('unbound:server:core') %}
-  {%- for zone_type, zones in salt['pillar.get']('unbound:server:core:local_zones', {})|dictsort %}
-    {%- if 'nodefault' in zones %}
-    # Nodefault zones
-      {%- if zones.nodefault is string %}
-    local-zone: {{ zones.nodefault }} nodefault
-      {%- else %}
-        {%- for zone in zones.nodefault %}
-    local-zone: {{ zone }} nodefault
-	    {%- endfor %}
-      {%- endif %}
+  {%- for local_zone_type, local_zones in salt['pillar.get']('unbound:server:core:local_zones', {})|dictsort %}
+    {%- if local_zones is string %}
+    local-zone: "{{ local_zones }}" {{ local_zone_type }}
+    {%- else %}
+      {%- for local_zone in local_zones %}
+    local-zone: "{{ local_zone }}" {{ local_zone_type }}
+      {%- endfor %}
     {%- endif %}
-    {%- if 'transparent' in zones %}
-    # Transparent zones
-      {%- if zones.transparent is string %}
-    local-zone: {{ zones.transparent }} transparent
-      {%- else %}
-        {%- for zone in zones.transparent %}
-    local-zone: {{ zone }} transparent
-	    {%- endfor %}
-      {%- endif %}
-    {%- endif %}
-    {%- if 'deny' in zones %}
-    # Denied zones
-      {%- if zones.deny is string %}
-    local-zone: {{ zones.deny }} deny
-      {%- else %}
-        {%- for zone in zones.deny %}
-    local-zone: {{ zone }} deny
-	    {%- endfor %}
-      {%- endif %}
-    {%- endif %}
-    {%- if 'refuse' in zones %}
-    # Refused zones
-      {%- if zones.refuse is string %}
-    local-zone: {{ zones.refuse }} refuse
-      {%- else %}
-        {%- for zone in zones.refuse %}
-    local-zone: {{ zone }} refuse
-	    {%- endfor %}
-      {%- endif %}
-    {%- endif %}
-    {%- if 'static' in zones %}
-    # Static zones
-      {%- if zones.static is string %}
-    local-zone: {{ zones.static }} static
-      {%- else %}
-        {%- for zone in zones.static %}
-    local-zone: {{ zone }} static
-	    {%- endfor %}
-      {%- endif %}
-    {%- endif %}
-    {%- if 'redirect' in zones %}
-    # Redirect zones
-      {%- if zones.redirect is string %}
-    local-zone: {{ zones.redirect }} redirect
-      {%- else %}
-        {%- for zone in zones.redirect %}
-    local-zone: {{ zone }} redirect
-	    {%- endfor %}
-      {%- endif %}
-    {%- endif %}
-    {%- if 'typetransparent' in zones %}
-    # Typetransparent zones
-      {%- if zones.typetransparent is string %}
-    local-zone: {{ zones.typetransparent }} typetransparent
-      {%- else %}
-        {%- for zone in zones.typetransparent %}
-    local-zone: {{ zone }} typetransparent
-	    {%- endfor %}
-      {%- endif %}
-    {%- endif %}
-  {% endfor %}
+  {%- endfor %}
 {%- endif %}
 {%- if 'log_queries' in salt['pillar.get']('unbound:server:core', {}) %}
     log-queries: {{ salt['pillar.get']('unbound:server:core:log_queries') }}
