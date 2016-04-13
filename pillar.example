@@ -79,94 +79,94 @@ unbound:
     # Uncomment in case they are
 
     advanced:
-      add_holddown: 2592000 # Units in seconds
-      auto_trust_anchor_file: '/etc/unbound/root.key'
-      del_holddown: 2592000 # Units in seconds
-      delay_close: 0 # Units in msec
-      dlv_anchor_file: 'dlv.isc.org.key'
-      do_not_query_addresses:
-        - '127.0.0.1/8'
-        - '::1'
-      domains_insecure: # Ignore chain of trust for these domains
-        - 'example.com'
-        - 'company.com'
-      edns_buffer_size: 4096
-      extended_statistics: 'no'
-      harden_below_nxdomain: 'no'
-      harden_dnssec_stripped: 'yes'
-      harden_glue: 'yes'
-      harden_large_queries: 'no'
-      harden_referral_path: 'no'
-      harden_short_bufsize: 'no'
-      ignore_cd_flag: 'no'
-      incoming_num_tcp: 10
-      infra_cache_numhosts: 10000
-      infra_cache_slabs: 4
-      infra_host_ttl: 900 # Units in seconds
-      interface_automatic: 'no'
-      jostle_timeout: 200 # Units in msec
-      keep_missing: 31622400 # Units in seconds
-      key_cache_size: '4m' # Use m (megabyte), k (kilobyte), or G (gigabyte), or no suffix (bytes)
-      key_cache_slabs: 4
-      max_udp_size: 4096
-      minimal_responses: 'no'
-      msg_buffer_size: 65552
-      msg_cache_size: '4m' # Use m (megabyte), k (kilobyte), or G (gigabyte), or no suffix (bytes)
-      msg_cache_slabs: 4
-      neg_cache_size: '1m' # Use m (megabyte), k (kilobyte), or G (gigabyte), or no suffix (bytes)
-      num_queries_per_thread: 1024
-      num_threads: 1
-      outgoing_interfaces: # Comment out to use default (all interfaces)
-        - '192.0.2.153'
-        - '2001:DB8::5'
-      outgoing_num_tcp: 10
-      outgoing_port_avoid: '3200-3208'
-      outgoing_port_permit: 32768
-      outgoing_range: 4096
-      prefetch_key: 'no'
-      private_addresses:
-        - '10.0.0.0/8'
-        - '172.16.0.0/12'
-        - '192.168.0.0/16'
-        - '169.254.0.0/16'
-        - 'fd00::/8'
-        - 'fe80::/10'
-      private_domains:
-        - 'example.com'
-        - 'company.com'
-      rrset_cache_size: '4m' # Use m (megabyte), k (kilobyte), or G (gigabyte), or no suffix (bytes)
-      rrset_cache_slabs: 4
-      rrset_roundrobin: 'no'
-      so_rcvbuf: 0
-      so_reuseport: 'no'
-      so_sndbuf: 0
-      ssl_port: 443
-      ssl_service_key: '/path/to/privatekeyfile.key'
-      ssl_service_pem: '/path/to/publiccertfile.pem'
-      ssl_upstream: 'no'
-      statistics_cumulative: 'no'
-      statistics_interval: 'no'
-      target_fetch_policy: '3 2 1 0 0'
-      tcp_upstream: 'no'
-      trust_anchor_files:
-        - '/etc/unbound/trust-anchor1.key'
-        - '/etc/unbound/trust-anchor2.key'
-      trust_anchors:
-        - 'nlnetlabs.nl. DNSKEY 257 3 5 AQPzzTWMz8qSWIQlfRnPckx2BiVmkVN6LPupO3mbz7FhLSnm26n6iG9N Lby97Ji453aWZY3M5/xJBSOS2vWtco2t8C0+xeO1bc/d6ZTy32DHchpW 6rDH1vp86Ll+ha0tmwyy9QP7y2bVw5zSbFCrefk8qCUBgfHm9bHzMG1U BYtEIQ=='
-        - 'jelte.nlnetlabs.nl. DS 42860 5 1 14D739EB566D2B1A5E216A0BA4D17FA9B038BE4A'
-      trusted_keys_files: # BIND9 style formatted keys 'trusted-keys { name flag proto algo "key"; };'
-        - '/etc/unbound/trust-keys1.key'
-        - '/etc/unbound/trust-keys2.key'
-      unwanted_reply_threshold: 0
-      use_caps_for_id: 'no'
-      val_bogus_ttl: 60 # Units in seconds
-      val_clean_additional: 'yes'
-      val_log_level: 0
-      val_nsec3_keysize_iterations: '1024 150 2048 500 4096 2500'
-      val_override_date: '' # Blank or '0' turns this off; '-1' ignores the date
-      val_permissive_mode: 'no'
-      val_sig_skew_max: 86400 # Units in seconds
-      val_sig_skew_min: 3600 # Units in seconds
+    #   add_holddown: 2592000 # Units in seconds
+    #   auto_trust_anchor_file: '/etc/unbound/root.key'
+    #   del_holddown: 2592000 # Units in seconds
+    #   delay_close: 0 # Units in msec
+    #   dlv_anchor_file: 'dlv.isc.org.key'
+    #   do_not_query_addresses:
+    #     - '127.0.0.1/8'
+    #     - '::1'
+    #   domains_insecure: # Ignore chain of trust for these domains
+    #     - 'example.com'
+    #     - 'company.com'
+    #   edns_buffer_size: 4096
+    #   extended_statistics: 'no'
+    #   harden_below_nxdomain: 'no'
+    #   harden_dnssec_stripped: 'yes'
+    #   harden_glue: 'yes'
+    #   harden_large_queries: 'no'
+    #   harden_referral_path: 'no'
+    #   harden_short_bufsize: 'no'
+    #   ignore_cd_flag: 'no'
+    #   incoming_num_tcp: 10
+    #   infra_cache_numhosts: 10000
+    #   infra_cache_slabs: 4
+    #   infra_host_ttl: 900 # Units in seconds
+    #   interface_automatic: 'no'
+    #   jostle_timeout: 200 # Units in msec
+    #   keep_missing: 31622400 # Units in seconds
+    #   key_cache_size: '4m' # Use m (megabyte), k (kilobyte), or G (gigabyte), or no suffix (bytes)
+    #   key_cache_slabs: 4
+    #   max_udp_size: 4096
+    #   minimal_responses: 'no'
+    #   msg_buffer_size: 65552
+    #   msg_cache_size: '4m' # Use m (megabyte), k (kilobyte), or G (gigabyte), or no suffix (bytes)
+    #   msg_cache_slabs: 4
+    #   neg_cache_size: '1m' # Use m (megabyte), k (kilobyte), or G (gigabyte), or no suffix (bytes)
+    #   num_queries_per_thread: 1024
+    #   num_threads: 1
+    #   outgoing_interfaces: # Comment out to use default (all interfaces)
+    #     - '192.0.2.153'
+    #     - '2001:DB8::5'
+    #   outgoing_num_tcp: 10
+    #   outgoing_port_avoid: '3200-3208'
+    #   outgoing_port_permit: 32768
+    #   outgoing_range: 4096
+    #   prefetch_key: 'no'
+    #   private_addresses:
+    #     - '10.0.0.0/8'
+    #     - '172.16.0.0/12'
+    #     - '192.168.0.0/16'
+    #     - '169.254.0.0/16'
+    #     - 'fd00::/8'
+    #     - 'fe80::/10'
+    #   private_domains:
+    #     - 'example.com'
+    #     - 'company.com'
+    #   rrset_cache_size: '4m' # Use m (megabyte), k (kilobyte), or G (gigabyte), or no suffix (bytes)
+    #   rrset_cache_slabs: 4
+    #   rrset_roundrobin: 'no'
+    #   so_rcvbuf: 0
+    #   so_reuseport: 'no'
+    #   so_sndbuf: 0
+    #   ssl_port: 443
+    #   ssl_service_key: '/path/to/privatekeyfile.key'
+    #   ssl_service_pem: '/path/to/publiccertfile.pem'
+    #   ssl_upstream: 'no'
+    #   statistics_cumulative: 'no'
+    #   statistics_interval: 'no'
+    #   target_fetch_policy: '3 2 1 0 0'
+    #   tcp_upstream: 'no'
+    #   trust_anchor_files:
+    #     - '/etc/unbound/trust-anchor1.key'
+    #     - '/etc/unbound/trust-anchor2.key'
+    #   trust_anchors:
+    #     - 'nlnetlabs.nl. DNSKEY 257 3 5 AQPzzTWMz8qSWIQlfRnPckx2BiVmkVN6LPupO3mbz7FhLSnm26n6iG9N Lby97Ji453aWZY3M5/xJBSOS2vWtco2t8C0+xeO1bc/d6ZTy32DHchpW 6rDH1vp86Ll+ha0tmwyy9QP7y2bVw5zSbFCrefk8qCUBgfHm9bHzMG1U BYtEIQ=='
+    #     - 'jelte.nlnetlabs.nl. DS 42860 5 1 14D739EB566D2B1A5E216A0BA4D17FA9B038BE4A'
+    #   trusted_keys_files: # BIND9 style formatted keys 'trusted-keys { name flag proto algo "key"; };'
+    #     - '/etc/unbound/trust-keys1.key'
+    #     - '/etc/unbound/trust-keys2.key'
+    #   unwanted_reply_threshold: 0
+    #   use_caps_for_id: 'no'
+    #   val_bogus_ttl: 60 # Units in seconds
+    #   val_clean_additional: 'yes'
+    #   val_log_level: 0
+    #   val_nsec3_keysize_iterations: '1024 150 2048 500 4096 2500'
+    #   val_override_date: '' # Blank or '0' turns this off; '-1' ignores the date
+    #   val_permissive_mode: 'no'
+    #   val_sig_skew_max: 86400 # Units in seconds
+    #   val_sig_skew_min: 3600 # Units in seconds
 
   # Stub zones
   stub_zones:
