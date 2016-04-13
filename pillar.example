@@ -6,7 +6,7 @@ unbound:
   # require:
   #   - sls: example_formula.somesls
 
-{%- if grains['os_family'] == 'Debian' -%}
+{% if grains['os_family'] == 'Debian' %}
   default:
     enabled: True
     root_trust_anchor_update: True
@@ -14,7 +14,7 @@ unbound:
     resolvconf: True
     resolvconf_forwarders: True
     daemon_opts: '-c /etc/unbound/unbound.conf'
-{%- endif -%}
+{% endif %}
 
   server:
     # Core settings
