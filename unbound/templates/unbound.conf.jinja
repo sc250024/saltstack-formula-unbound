@@ -151,28 +151,26 @@ server:
   {%- if 'dlv_anchor_file' in salt['pillar.get']('unbound:server:advanced', {}) %}
     dlv-anchor-file: "{{ salt['pillar.get']('unbound:server:advanced:dlv_anchor_file') }}"
   {%- endif %}
-{%- if 'do_not_query_addresses' in salt['pillar.get']('unbound:server:advanced', {}) %}
-  {%- if salt['pillar.get']('unbound:server:advanced:do_not_query_addresses', {}) is string %}
+  {%- if 'do_not_query_addresses' in salt['pillar.get']('unbound:server:advanced', {}) %}
+    {%- if salt['pillar.get']('unbound:server:advanced:do_not_query_addresses', {}) is string %}
     # Do not query this address
     do-not-query-address: {{ salt['pillar.get']('unbound:server:advanced:do_not_query_addresses', {}) }}
-  {%- else %}
+    {%- else %}
     # Do not query these addresses
-    {%- for do_not_query_address in salt['pillar.get']('unbound:server:advanced:do_not_query_addresses', {}) %}
+      {%- for do_not_query_address in salt['pillar.get']('unbound:server:advanced:do_not_query_addresses', {}) %}
     do-not-query-address: {{ do_not_query_address }}
-    {%- endfor %}
+      {%- endfor %}
+    {%- endif %}
   {%- endif %}
-{%- endif %}
   {%- if 'domains_insecure' in salt['pillar.get']('unbound:server:advanced', {}) %}
-    # Turn of DNSSEC for these domains
-    {%- for domains_insecure in salt['pillar.get']('unbound:server:advanced:domains_insecure', {}) %}
-      {%- if domains_insecure is string %}
-    domain-insecure: {{ domains_insecure }}
-      {%- else %}
-        {%- for domain_insecure in salt['pillar.get']('unbound:server:advanced:domains_insecure', {}) %}
+    # Insecure domain(s)
+    {%- if salt['pillar.get']('unbound:server:advanced:domains_insecure', {}) is string %}
+    domain-insecure: {{ salt['pillar.get']('unbound:server:advanced:domains_insecure', {}) }}
+    {%- else %}
+      {%- for domain_insecure in salt['pillar.get']('unbound:server:advanced:domains_insecure', {}) %}
     domain-insecure: {{ domain_insecure }}
-        {%- endfor %}
-      {%- endif %}
-    {%- endfor %}
+      {%- endfor %}
+    {%- endif %}
   {%- endif %}
   {%- if 'edns_buffer_size' in salt['pillar.get']('unbound:server:advanced', {}) %}
     edns-buffer-size: {{ salt['pillar.get']('unbound:server:advanced:edns_buffer_size') }}
@@ -259,17 +257,15 @@ server:
     num-threads: {{ salt['pillar.get']('unbound:server:advanced:num_threads') }}
   {%- endif %}
   {%- if 'outgoing_interfaces' in salt['pillar.get']('unbound:server:advanced', {}) %}
-    {%- for outgoing_interfaces in salt['pillar.get']('unbound:server:advanced:outgoing_interfaces', {}) %}
-      {%- if outgoing_interfaces is string %}
+    {%- if salt['pillar.get']('unbound:server:advanced:outgoing_interfaces', {}) is string %}
     # Outgoing interface
-    outgoing-interface: {{ outgoing_interfaces }}
-      {%- else %}
+    outgoing-interface: {{ salt['pillar.get']('unbound:server:advanced:outgoing_interfaces', {}) }}
+    {%- else %}
     # Outgoing interfaces
-        {%- for outgoing_interface in salt['pillar.get']('unbound:server:advanced:outgoing_interfaces', {}) %}
+      {%- for outgoing_interface in salt['pillar.get']('unbound:server:advanced:outgoing_interfaces', {}) %}
     outgoing-interface: {{ outgoing_interface }}
-        {%- endfor %}
-      {%- endif %}
-    {%- endfor %}
+      {%- endfor %}
+    {%- endif %}
   {%- endif %}
   {%- if 'outgoing_num_tcp' in salt['pillar.get']('unbound:server:advanced', {}) %}
     outgoing-num-tcp: {{ salt['pillar.get']('unbound:server:advanced:outgoing_num_tcp') }}
@@ -287,30 +283,25 @@ server:
     prefetch-key: {{ salt['pillar.get']('unbound:server:advanced:prefetch_key') }}
   {%- endif %}
   {%- if 'private_addresses' in salt['pillar.get']('unbound:server:advanced', {}) %}
-    {%- for private_addresses in salt['pillar.get']('unbound:server:advanced:private_addresses', {}) %}
-      {%- if private_addresses is string %}
+    {%- if salt['pillar.get']('unbound:server:advanced:private_addresses', {}) is string %}
     # Private address
-    private-address: {{ private_addresses }}
-      {%- else %}
+    private-address: {{ salt['pillar.get']('unbound:server:advanced:private_addresses', {}) }}
+    {%- else %}
     # Private addresses
-        {%- for private_address in salt['pillar.get']('unbound:server:advanced:private_addresses', {}) %}
+      {%- for private_address in salt['pillar.get']('unbound:server:advanced:private_addresses', {}) %}
     private-address: {{ private_address }}
-        {%- endfor %}
-      {%- endif %}
-    {%- endfor %}
+      {%- endfor %}
+    {%- endif %}
   {%- endif %}
   {%- if 'private_domains' in salt['pillar.get']('unbound:server:advanced', {}) %}
-    {%- for private_domains in salt['pillar.get']('unbound:server:advanced:private_domains', {}) %}
-      {%- if private_domains is string %}
-    # Private domain
-    private-domain: {{ private_domains }}
-      {%- else %}
-    # Private domains
-        {%- for private_domain in salt['pillar.get']('unbound:server:advanced:private_domains', {}) %}
+    # Private domain(s)
+    {%- if salt['pillar.get']('unbound:server:advanced:private_domains', {}) is string %}
+    private-domain: {{ salt['pillar.get']('unbound:server:advanced:private_domains', {}) }}
+    {%- else %}
+      {%- for private_domain in salt['pillar.get']('unbound:server:advanced:private_domains', {}) %}
     private-domain: {{ private_domain }}
-        {%- endfor %}
-      {%- endif %}
-    {%- endfor %}
+      {%- endfor %}
+    {%- endif %}
   {%- endif %}
   {%- if 'rrset_cache_size' in salt['pillar.get']('unbound:server:advanced', {}) %}
     rrset-cache-size: {{ salt['pillar.get']('unbound:server:advanced:rrset_cache_size') }}
@@ -355,43 +346,34 @@ server:
     tcp-upstream: {{ salt['pillar.get']('unbound:server:advanced:tcp_upstream') }}
   {%- endif %}
   {%- if 'trust_anchor_files' in salt['pillar.get']('unbound:server:advanced', {}) %}
-    {%- for trust_anchor_files in salt['pillar.get']('unbound:server:advanced:trust_anchor_files', {}) %}
-      {%- if trust_anchor_files is string %}
-    # Private domain
-    trust-anchor-file: "{{ trust_anchor_files }}"
-      {%- else %}
-    # Private domains
-        {%- for trust_anchor_file in salt['pillar.get']('unbound:server:advanced:trust_anchor_files', {}) %}
+    # Trust anchor file(s)
+    {%- if salt['pillar.get']('unbound:server:advanced:trust_anchor_files', {}) is string %}
+    trust-anchor-file: "{{ salt['pillar.get']('unbound:server:advanced:trust_anchor_files', {}) }}"
+    {%- else %}
+      {%- for trust_anchor_file in salt['pillar.get']('unbound:server:advanced:trust_anchor_files', {}) %}
     trust-anchor-file: "{{ trust_anchor_file }}"
-        {%- endfor %}
-      {%- endif %}
-    {%- endfor %}
+      {%- endfor %}
+    {%- endif %}
   {%- endif %}
   {%- if 'trust_anchors' in salt['pillar.get']('unbound:server:advanced', {}) %}
-    {%- for trust_anchors in salt['pillar.get']('unbound:server:advanced:trust_anchors', {}) %}
-      {%- if trust_anchors is string %}
-    # Private domain
-    trust-anchor: "{{ trust_anchors }}"
-      {%- else %}
-    # Private domains
-        {%- for trust_anchor in salt['pillar.get']('unbound:server:advanced:trust_anchors', {}) %}
+    # Trust anchor(s)
+    {%- if salt['pillar.get']('unbound:server:advanced:trust_anchors', {}) is string %}
+    trust-anchor: "{{ salt['pillar.get']('unbound:server:advanced:trust_anchors', {}) }}"
+    {%- else %}
+      {%- for trust_anchor in salt['pillar.get']('unbound:server:advanced:trust_anchors', {}) %}
     trust-anchor: "{{ trust_anchor }}"
-        {%- endfor %}
-      {%- endif %}
-    {%- endfor %}
+      {%- endfor %}
+    {%- endif %}
   {%- endif %}
   {%- if 'trusted_keys_files' in salt['pillar.get']('unbound:server:advanced', {}) %}
-    {%- for trusted_keys_files in salt['pillar.get']('unbound:server:advanced:trusted_keys_files', {}) %}
-      {%- if trusted_keys_files is string %}
-    # Private domain
-    trusted-keys-file: {{ trusted_keys_files }}
-      {%- else %}
-    # Private domains
-        {%- for trusted_keys_file in salt['pillar.get']('unbound:server:advanced:trusted_keys_files', {}) %}
-    trusted-keys-file: {{ trusted_keys_file }}
-        {%- endfor %}
-      {%- endif %}
-    {%- endfor %}
+    # Trusted key file(s)
+    {%- if salt['pillar.get']('unbound:server:advanced:trusted_keys_files', {}) is string %}
+    trusted-keys-file: "{{ salt['pillar.get']('unbound:server:advanced:trusted_keys_files', {}) }}"
+    {%- else %}
+      {%- for trusted_key_file in salt['pillar.get']('unbound:server:advanced:trusted_keys_files', {}) %}
+    trusted-keys-file: "{{ trusted_key_file }}"
+      {%- endfor %}
+    {%- endif %}
   {%- endif %}
   {%- if 'unwanted_reply_threshold' in salt['pillar.get']('unbound:server:advanced', {}) %}
     unwanted-reply-threshold: {{ salt['pillar.get']('unbound:server:advanced:unwanted_reply_threshold') }}
@@ -484,17 +466,15 @@ forward-zone:
   {%- endfor %}
 {%- endif %}
 
-{%- if salt['pillar.get']('unbound:python') %}
+{%- if salt['pillar.get']('unbound:python', {}) %}
 python:
-  {%- for python_scripts in salt['pillar.get']('unbound:python') %}
-    {%- if python_scripts is string %}
-    python-script: "{{ python_scripts }}"
-    {%- else %}
-      {%- for python_script in salt['pillar.get']('unbound:python') %}
+  {%- if salt['pillar.get']('unbound:python', {}) is string %}
+    python-script: "{{ salt['pillar.get']('unbound:python') }}"
+  {%- else %}
+    {%- for python_script in salt['pillar.get']('unbound:python', {}) %}
     python-script: "{{ python_script }}"
-      {%- endfor %}
-    {%- endif %}
-  {%- endfor %}
+    {%- endfor %}
+  {%- endif %}
 {%- endif %}
 
 {%- if salt['pillar.get']('unbound:remote_control') %}
@@ -503,17 +483,14 @@ remote-control:
     control-enable: {{ salt['pillar.get']('unbound:remote_control:control_enable') }}
   {%- endif %}
   {%- if 'control_interfaces' in salt['pillar.get']('unbound:remote_control', {}) %}
-    {%- for control_interfaces in salt['pillar.get']('unbound:remote_control:control_interfaces', {}) %}
-      {%- if control_interfaces is string %}
-    # Control interface
-    control-interface: {{ control_interfaces }}
-      {%- else %}
-    # Control interfaces
-        {%- for control_interface in salt['pillar.get']('unbound:remote_control:control_interfaces', {}) %}
+    # Control interface(s)
+    {%- if salt['pillar.get']('unbound:remote_control:control_interfaces', {}) is string %}
+    control-interface: {{ salt['pillar.get']('unbound:remote_control:control_interfaces') }}
+    {%- else %}
+      {%- for control_interface in salt['pillar.get']('unbound:remote_control:control_interfaces', {}) %}
     control-interface: {{ control_interface }}
-        {%- endfor %}
-      {%- endif %}
-    {%- endfor %}
+      {%- endfor %}
+    {%- endif %}
   {%- endif %}
   {%- if 'control_port' in salt['pillar.get']('unbound:remote_control', {}) %}
     control-port: {{ salt['pillar.get']('unbound:remote_control:control_port') }}
