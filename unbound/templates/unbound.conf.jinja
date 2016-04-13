@@ -296,10 +296,10 @@ server:
   {%- if 'private_domains' in salt['pillar.get']('unbound:server:advanced', {}) %}
     # Private domain(s)
     {%- if salt['pillar.get']('unbound:server:advanced:private_domains', {}) is string %}
-    private-domain: {{ salt['pillar.get']('unbound:server:advanced:private_domains', {}) }}
+    private-domain: "{{ salt['pillar.get']('unbound:server:advanced:private_domains', {}) }}"
     {%- else %}
       {%- for private_domain in salt['pillar.get']('unbound:server:advanced:private_domains', {}) %}
-    private-domain: {{ private_domain }}
+    private-domain: "{{ private_domain }}"
       {%- endfor %}
     {%- endif %}
   {%- endif %}

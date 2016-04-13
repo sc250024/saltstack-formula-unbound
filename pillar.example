@@ -55,7 +55,7 @@ unbound:
         - 'example.org A 2.3.5.8'
       local_data_ptr: # Same as above, but for PTR records
         - '3.2.0.192 www.example.com'
-        - '8.5.3.2   www.example.org'
+        - '8.5.3.2 www.example.org'
       local_zones: # Other options are 'deny', 'refuse', 'static', 'redirect', and 'typetransparent'
         nodefault:
           - '30.172.in-addr.arpa.'
