@@ -6,7 +6,7 @@ unbound:
   # require:
   #   - sls: example_formula.somesls
 
-{% if grains['os_family'] == 'Debian' %}
+{% if salt['grains.get']('os_family') == 'Debian' %}
   default:
     enabled: True
     root_trust_anchor_update: True
@@ -120,8 +120,8 @@ unbound:
     #     - '192.0.2.153'
     #     - '2001:DB8::5'
     #   outgoing_num_tcp: 10
-    #   outgoing_port_avoid: '3200-3208'
-    #   outgoing_port_permit: 32768
+    #   outgoing_port_avoid: '0-32767'
+    #   outgoing_port_permit: '32768-65535'
     #   outgoing_range: 4096
     #   prefetch_key: 'no'
     #   private_addresses:

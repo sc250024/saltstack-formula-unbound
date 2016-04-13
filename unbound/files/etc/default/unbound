@@ -1,0 +1,18 @@
+# If set, the unbound daemon will be started and stopped by the init script.
+UNBOUND_ENABLE={{ salt['pillar.get']('unbound:default:enabled', 'true')|lower }}
+
+# Whether to automatically update the root trust anchor file.
+ROOT_TRUST_ANCHOR_UPDATE={{ salt['pillar.get']('unbound:default:root_trust_anchor_update', 'true')|lower }}
+
+# File in which to store the root trust anchor.
+ROOT_TRUST_ANCHOR_FILE={{ salt['pillar.get']('unbound:default:root_trust_anchor_file', '/var/lib/unbound/root.key') }}
+
+# If set, the unbound init script will provide unbound's listening
+# IP addresses as nameservers to resolvconf.
+RESOLVCONF={{ salt['pillar.get']('unbound:default:resolvconf', 'true')|lower }}
+
+# If set, resolvconf nameservers will be configured as forwarders
+# to be used by unbound.
+RESOLVCONF_FORWARDERS={{ salt['pillar.get']('unbound:default:resolvconf_forwarders', 'true')|lower }}
+
+#DAEMON_OPTS="{{ salt['pillar.get']('unbound:default:daemon_opts', '-c /etc/unbound/unbound.conf') }}"
