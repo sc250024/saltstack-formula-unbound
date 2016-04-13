@@ -1,0 +1,8 @@
+name: unbound
+os: Debian, Ubuntu
+os_family: Debian
+version: 201604
+release: 1
+minimum_version: 2015.8
+summary: Formula for installing Unbound
+description: Formula for installing Unbound recursive caching DNS server

@@ -4,9 +4,9 @@
 
 {% if salt['pillar.get']('unbound:include') %}
 include:
-{% for include in salt['pillar.get']('unbound:include') %}
+  {% for include in salt['pillar.get']('unbound:include') %}
   - {{ include }}
-{% endfor %}
+  {% endfor %}
 {% endif %}
   - unbound.install
   - unbound.service
