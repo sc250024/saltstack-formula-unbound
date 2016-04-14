@@ -2,12 +2,23 @@ unbound.service:
   service.running:
     - name: unbound
     - enable: True
-    - provider: service
     - reload: True
+    - provider: service
     - require:
       - pkg: unbound
-      - file: unbound.service
+      - file: unbound.config
 {% if salt['grains.get']('os_family') == 'Debian' %}
+      - file: unbound.service
+{% endif %}
+    - watch:
+      - file: unbound.config
+{% if salt['grains.get']('os_family') == 'Debian' %}
+      - file: unbound.service
+{% endif %}
+    - require:
+      - pkg: unbound
+{% if salt['grains.get']('os_family') == 'Debian' %}
+      - file: unbound.service
   file.managed:
     - name: '/etc/default/unbound'
     - source: salt://unbound/files/etc/default/unbound
