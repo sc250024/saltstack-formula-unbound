@@ -2,6 +2,7 @@ unbound.service:
   service.running:
     - name: unbound
     - enable: True
+    - provider: service
     - reload: True
     - require:
       - pkg: unbound
