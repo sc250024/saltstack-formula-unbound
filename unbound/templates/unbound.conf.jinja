@@ -165,10 +165,10 @@ server:
   {%- if 'domains_insecure' in salt['pillar.get']('unbound:server:advanced', {}) %}
     # Insecure domain(s)
     {%- if salt['pillar.get']('unbound:server:advanced:domains_insecure', {}) is string %}
-    domain-insecure: {{ salt['pillar.get']('unbound:server:advanced:domains_insecure', {}) }}
+    domain-insecure: "{{ salt['pillar.get']('unbound:server:advanced:domains_insecure', {}) }}"
     {%- else %}
       {%- for domain_insecure in salt['pillar.get']('unbound:server:advanced:domains_insecure', {}) %}
-    domain-insecure: {{ domain_insecure }}
+    domain-insecure: "{{ domain_insecure }}"
       {%- endfor %}
     {%- endif %}
   {%- endif %}
@@ -274,7 +274,7 @@ server:
     outgoing-port-avoid: "{{ salt['pillar.get']('unbound:server:advanced:outgoing_port_avoid') }}"
   {%- endif %}
   {%- if 'outgoing_port_permit' in salt['pillar.get']('unbound:server:advanced', {}) %}
-    outgoing-port-permit: {{ salt['pillar.get']('unbound:server:advanced:outgoing_port_permit') }}
+    outgoing-port-permit: "{{ salt['pillar.get']('unbound:server:advanced:outgoing_port_permit') }}"
   {%- endif %}
   {%- if 'outgoing_range' in salt['pillar.get']('unbound:server:advanced', {}) %}
     outgoing-range: {{ salt['pillar.get']('unbound:server:advanced:outgoing_range') }}
@@ -410,7 +410,7 @@ server:
 {%- if salt['pillar.get']('unbound:stub_zones') %}
   {%- for stub_key, stub_args in salt['pillar.get']('unbound:stub_zones', {})|dictsort %}
 stub-zone:
-    name: {{ stub_args['name'] }}
+    name: "{{ stub_args['name'] }}"
     {%- if 'stub_addrs' in stub_args %}
       {%- if stub_args['stub_addrs'] is string %}
     stub-addr: {{ stub_args['stub_addrs'] }}
@@ -441,7 +441,7 @@ stub-zone:
 {%- if salt['pillar.get']('unbound:forward_zones') %}
   {%- for forward_key, forward_args in salt['pillar.get']('unbound:forward_zones', {})|dictsort %}
 forward-zone:
-    name: {{ forward_args['name'] }}
+    name: "{{ forward_args['name'] }}"
     {%- if 'forward_addrs' in forward_args %}
       {%- if forward_args['forward_addrs'] is string %}
     forward-addr: {{ forward_args['forward_addrs'] }}
@@ -508,3 +508,5 @@ remote-control:
     control-cert-file: "{{ salt['pillar.get']('unbound:remote_control:control_cert_file') }}"
   {%- endif %}
 {%- endif %}
+
+include: "/etc/unbound/unbound.conf.d/*.conf"

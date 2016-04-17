@@ -6,12 +6,6 @@ unbound.service:
     - provider: service
     - require:
       - pkg: unbound
-      - file: unbound.config
-{% if salt['grains.get']('os_family') == 'Debian' %}
-      - file: unbound.service
-{% endif %}
-    - watch:
-      - file: unbound.config
 {% if salt['grains.get']('os_family') == 'Debian' %}
       - file: unbound.service
 {% endif %}
